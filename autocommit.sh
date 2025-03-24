@@ -63,18 +63,6 @@ grab_version(){
   fi
 }
 
-# Here we copy the sqlite database for backup
-# To RESTORE the database, stop moonraker, then use the following command:
-# cp ~/printer_data/config/moonraker-sql.db ~/printer_data/database/
-# Finally, restart moonraker
-
-if [ -f $db_file ]; then
-   echo "sqlite based history database found! Copying..."
-   cp ~/printer_data/database/moonraker-sql.db ~/printer_data/config/
-else
-   echo "sqlite based history database not found"
-fi
-
 # To fully automate this and not have to deal with auth issues, generate a legacy token on Github
 # then update the command below to use the token. Run the command in your base directory and it will
 # handle auth. This should just be executed in your shell and not committed to any files or
@@ -91,5 +79,27 @@ push_config(){
   git push origin $branch
 }
 
+# Here we copy the sqlite database for backup
+# To RESTORE the database, stop moonraker, then use the following command:
+# cp ~/printer_data/config/moonraker-sql.db ~/printer_data/database/
+# Finally, restart moonraker
+
+copy_moonraker_db(){
+  if [ -f $db_file ]; then
+     echo "sqlite based history database found! Copying..."
+     cp ~/printer_data/database/moonraker-sql.db ~/printer_data/config/
+  else
+     echo "sqlite based history database not found"
+  fi
+}
+
+remove_auto_backups(){
+  find "$config_folder" \
+    -regextype sed -regex\
+    "$config_folder/printer-[0-9]\{8\}_[0-9]\{6\}.cfg" \
+    -exec rm -f {} \;
+}
+
 grab_version
+remove_auto_backups
 push_config
