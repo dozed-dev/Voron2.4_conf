@@ -5,7 +5,7 @@ max_upload_size = 1024
 klippy_uds_address = ~/printer_data/comms/klippy.sock
 
 [file_manager]
-enable_object_processing = False
+enable_object_processing = True
 
 [authorization]
 cors_domains = 
@@ -76,4 +76,18 @@ virtualenv = ~/.KlipperScreen-env
 requirements = scripts/KlipperScreen-requirements.txt
 system_dependencies = scripts/system-dependencies.json
 managed_services = KlipperScreen
+
+[update_manager Klipper-Adaptive-Meshing-Purging]
+type = git_repo
+channel = dev
+path = ~/Klipper-Adaptive-Meshing-Purging
+origin = https://github.com/kyleisah/Klipper-Adaptive-Meshing-Purging.git
+managed_services = klipper
+primary_branch = main
+
+[update_manager katapult]
+type = git_repo
+path = ~/katapult
+origin = https://github.com/Arksine/katapult
+is_system_service = False
 
