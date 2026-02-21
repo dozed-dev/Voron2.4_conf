@@ -102,3 +102,12 @@ path = ~/katapult
 origin = https://github.com/Arksine/katapult
 is_system_service = False
 
+[update_manager cartographer_plugin]
+type = python
+channel = stable
+virtualenv = ~/klippy-env
+project_name = cartographer3d-plugin
+is_system_service = False
+managed_services = klipper
+info_tags = desc=Cartographer Plugin
+
