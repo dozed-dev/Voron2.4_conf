@@ -30,6 +30,26 @@ trusted_clients =
 subscriptions = 
 	mainsail
 
+[notifier print_done]
+url = mqtts://mamont-3d:gaYg6KZeEFSAYpn7@mqtt.svc.bksp.in:8883/bus/devices/mamont-3d/events
+events = complete,error,paused,cancelled
+body = 
+	{% if event_name == "complete" %}
+	Мамонт дотопал: {event_args[1].filename}
+	{% elif event_name == "error" %}
+	Мамонт вымер
+	{% elif event_name == "paused" %}
+	Мамонт прилег отдохнуть
+	{% elif event_name == "cancelled" %}
+	Мамонт вымер (остановился)
+	{% else %}
+	С мамонтом что-то произошло
+	{% endif %}
+
+[timelapse]
+output_path = ~/timelapse/
+ffmpeg_binary_path = /usr/bin/ffmpeg
+
 [update_manager]
 refresh_interval = 168
 enable_auto_refresh = True
@@ -60,10 +80,6 @@ primary_branch = main
 path = ~/moonraker-timelapse
 origin = https://github.com/mainsail-crew/moonraker-timelapse.git
 managed_services = klipper moonraker
-
-[timelapse]
-output_path = ~/timelapse/
-ffmpeg_binary_path = /usr/bin/ffmpeg
 
 [update_manager sonar]
 type = git_repo
